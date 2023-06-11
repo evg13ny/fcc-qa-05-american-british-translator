@@ -1,3 +1,7 @@
 # American British Translator
 
-This is the boilerplate for the American British Translator project. Instructions for building your project can be found at https://www.freecodecamp.org/learn/quality-assurance/quality-assurance-projects/american-british-translator
+written using Express and Node.js.
+
+Tested with Mocha and Chai.
+
+Never mix American English and British English again [here](https://fcc-qa-05-american-british-translator.evg13ny.repl.co).
