@@ -16,7 +16,7 @@ class Translator {
         const dict = { ...americanOnly, ...americanToBritishSpelling };
         const titles = americanToBritishTitles;
         const timeRegex = /([1-9]|1[012]):[0-5][0-9]/g;
-        const translation = this.translate(
+        const result = this.translate(
             text,
             dict,
             titles,
@@ -24,18 +24,18 @@ class Translator {
             'toBritish'
         );
 
-        if (!translation) {
+        if (!result) {
             return text;
         }
 
-        return translation;
+        return result;
     }
 
     toAmericanEnglish(text) {
         const dict = { ...britishOnly, ...reverseDict(americanToBritishSpelling) };
         const titles = reverseDict(americanToBritishTitles);
         const timeRegex = /([1-9]|1[012]).[0-5][0-9]/g;
-        const translation = this.translate(
+        const result = this.translate(
             text,
             dict,
             titles,
@@ -43,11 +43,11 @@ class Translator {
             'toAmerican'
         );
 
-        if (!translation) {
+        if (!result) {
             return text;
         }
 
-        return translation;
+        return result;
     }
 
     translate(text, dict, titles, timeRegex, locale) {
@@ -70,8 +70,8 @@ class Translator {
             }
         });
 
-        lowerText.match(/(\w+([-'])(\w+)?['-]?(\w+))|]\w+/g).forEach(word => {
-            if (dict[word]) matchesMap[word] = dict[word]
+        lowerText.match(/(\w+([-'])(\w+)?['-]?(\w+))|\w+/g).forEach(word => {
+            if (dict[word]) matchesMap[word] = dict[word];
         });
 
         const matchedTime = lowerText.match(timeRegex);
@@ -79,16 +79,16 @@ class Translator {
         if (matchedTime) {
             matchedTime.map((e) => {
                 if (locale === 'toBritish') {
-                    return (matchedTime[e] = e.replace(':', '.'));
+                    return (matchesMap[e] = e.replace(':', '.'));
                 } else {
-                    return (matchedTime[e] = e.replace('.', ':'));
+                    return (matchesMap[e] = e.replace('.', ':'));
                 }
             });
         }
 
         if (Object.keys(matchesMap).length === 0) return null;
 
-        const translation = this.toBritishEnglish.replaceAll(text, matchesMap);
+        const translation = this.replaceAll(text, matchesMap);
 
         const translationWithHighlight = this.replaceAllWithHighlight(
             text,
